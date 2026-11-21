@@ -1,0 +1,26 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<script>/* fn-https */ if (location.protocol === 'http:' && location.hostname === 'play.bizmith.com') { location.replace('https://' + location.host + location.pathname + location.search + location.hash); }</script>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Fright Night</title>
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<link rel="apple-touch-icon" href="../img/apple-touch-icon.png">
+<style>html, body { margin: 0; height: 100%; background: #030306; color: #ddd; font: 18px sans-serif; } p { padding: 40vh 16px 0; text-align: center; }</style>
+</head>
+<body>
+<noscript><p>Fright Night needs JavaScript. <a href="mobile/">Phone</a> · <a href="desktop/">Computer</a></p></noscript>
+<script>
+// The game's fixed address. A phone or tablet gets the touch build, a computer the mouse-and-keys
+// build (two exports of the same game, with the same save). An iPad says it's a Mac, so: a Mac
+// with a touch screen.
+(function () {
+	var ua = navigator.userAgent || '';
+	var touch = /iPhone|iPad|iPod|Android/i.test(ua) || (/Macintosh/.test(ua) && navigator.maxTouchPoints > 1);
+	location.replace((touch ? 'mobile/' : 'desktop/') + location.search + location.hash);
+}());
+</script>
+</body>
+</html>

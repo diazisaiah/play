@@ -1,0 +1,89 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<script>/* fn-https */ if (location.protocol === 'http:' && location.hostname === 'play.bizmith.com') { location.replace('https://' + location.host + location.pathname + location.search + location.hash); }</script>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Play: games from Bizmith</title>
+<meta name="description" content="Games you can play right here. No download, on a computer or a phone.">
+<meta name="theme-color" content="#0b0d10">
+<meta property="og:type" content="website">
+<meta property="og:title" content="Play: games from Bizmith">
+<meta property="og:description" content="Games you can play right here. No download, on a computer or a phone.">
+<meta property="og:image" content="https://play.bizmith.com/fright-night/img/cover.png">
+<link rel="icon" type="image/png" href="fright-night/img/icon.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Anton&family=Open+Sans:wght@400;600;700&display=swap">
+<style>
+/* The hub at play.bizmith.com: one card per game. A game brings its own colour (--c) and cover;
+   a new game is one more <a class="card"> in .games. */
+:root {
+	color-scheme: dark;
+	--bg: #0b0d10;
+	--slab: #14171c;
+	--text: #d9dde8;
+	--muted: #8a90a3;
+	--line: #ffffff;
+	--edge: #04050a;
+	--display: Anton, Impact, "Arial Narrow Bold", "Arial Narrow", sans-serif;
+	--body: "Open Sans", "Segoe UI", system-ui, -apple-system, sans-serif;
+}
+*, *::before, *::after { box-sizing: border-box; }
+html { background: var(--bg); }
+body { margin: 0; background: var(--bg); color: var(--text); font-family: var(--body); font-size: 17px; line-height: 1.55; }
+a { color: inherit; }
+a:focus-visible { outline: 2px solid var(--line); outline-offset: 4px; }
+.wrap { max-width: 1100px; margin: 0 auto; padding: 0 max(22px, env(safe-area-inset-left, 0px)) 56px; }
+.top { display: flex; justify-content: space-between; align-items: center; gap: 12px; padding: 22px 0; font-family: var(--display); letter-spacing: .16em; text-transform: uppercase; font-size: 15px; }
+.top a { text-decoration: none; opacity: .75; }
+.top a:hover { opacity: 1; }
+.mark { font-size: 22px; letter-spacing: .12em; color: var(--line); }
+.mark b { font-weight: 400; background: var(--line); color: var(--bg); padding: 1px 9px 3px; margin-left: 8px; display: inline-block; transform: skewX(-12deg); }
+.mark b span { display: inline-block; transform: skewX(12deg); }
+h1 { font-family: var(--display); font-weight: 400; text-transform: uppercase; font-size: clamp(40px, 8vw, 84px); line-height: 1.02; letter-spacing: .02em; color: var(--line); margin: 34px 0 14px; }
+.sub { font-size: 19px; color: var(--muted); margin: 0 0 40px; }
+.games { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 22px; }
+.card { display: flex; flex-direction: column; background: var(--slab); text-decoration: none; border: 2px solid rgba(255, 255, 255, .14); transition: transform .12s ease, border-color .12s ease; }
+.card:hover { transform: translateY(-4px); border-color: var(--c, var(--line)); }
+.card img { display: block; width: 100%; height: auto; aspect-ratio: 63 / 50; object-fit: cover; border-bottom: 5px solid var(--c, var(--line)); }
+.card .in { padding: 16px 18px 20px; display: flex; flex-direction: column; gap: 6px; flex: 1; }
+.card h2 { font-family: var(--display); font-weight: 400; text-transform: uppercase; letter-spacing: .06em; font-size: 28px; line-height: 1.1; color: var(--line); margin: 0; }
+.card p { margin: 0 0 12px; color: var(--text); font-size: 16px; }
+.go { margin-top: auto; align-self: flex-start; background: var(--c, var(--line)); transform: skewX(-12deg); padding: 3px 26px 6px; }
+.go span { display: block; transform: skewX(12deg); font-family: var(--display); font-size: 20px; letter-spacing: .14em; text-transform: uppercase; color: var(--edge); }
+.soon { border: 2px dashed rgba(255, 255, 255, .22); background: transparent; min-height: 220px; align-items: center; justify-content: center; text-align: center; color: var(--muted); font-family: var(--display); letter-spacing: .16em; text-transform: uppercase; padding: 20px; }
+.soon:hover { transform: none; border-color: rgba(255, 255, 255, .22); }
+footer { margin-top: 56px; padding-top: 22px; border-top: 1px solid rgba(255, 255, 255, .14); color: var(--muted); font-size: 15px; }
+footer a { color: var(--text); }
+</style>
+</head>
+<body>
+<div class="wrap">
+	<div class="top"><span class="mark">Bizmith<b><span>Play</span></b></span><a href="https://bizmith.com">bizmith.com</a></div>
+	<h1>Games you can play right here.</h1>
+	<p class="sub">No download. No sign-up. On a computer or a phone.</p>
+
+	<div class="games">
+		<a class="card" href="fright-night/" style="--c: #ff6b1f">
+			<img src="fright-night/img/cover.png" width="1260" height="1000" alt="Fright Night: four fighters in slanted panels over the title">
+			<div class="in">
+				<h2>Fright Night</h2>
+				<p>First-person boxing. Your opponents are already dead.</p>
+				<div class="go"><span>Play</span></div>
+			</div>
+		</a>
+		<a class="card" href="hold-the-line/" style="--c: #e8c547">
+			<img src="img/hold-the-line.png" width="1260" height="1000" alt="Hold the Line: a band of pixel-art heroes under a crowned shadow with burning eyes">
+			<div class="in">
+				<h2>Hold the Line</h2>
+				<p>Castle defence. Hire knights, archers and mages, then hold the line.</p>
+				<div class="go"><span>Play</span></div>
+			</div>
+		</a>
+		<div class="card soon">More on the way</div>
+	</div>
+
+	<footer>Made at <a href="https://bizmith.com">Bizmith</a>.</footer>
+</div>
+</body>
+</html>

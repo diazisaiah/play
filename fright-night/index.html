@@ -1,0 +1,155 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<script>/* fn-https */ if (location.protocol === 'http:' && location.hostname === 'play.bizmith.com') { location.replace('https://' + location.host + location.pathname + location.search + location.hash); }</script>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Fright Night: bare-knuckle boxing in the graveyard</title>
+<meta name="description" content="First-person boxing. Your opponents are already dead. Free in your browser, on a computer or a phone.">
+<meta name="theme-color" content="#05060b">
+<meta property="og:type" content="website">
+<meta property="og:title" content="Fright Night">
+<meta property="og:description" content="First-person boxing. Your opponents are already dead. Free in your browser.">
+<meta property="og:image" content="https://play.bizmith.com/fright-night/img/cover.png">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="Fright Night">
+<link rel="manifest" href="app.webmanifest">
+<link rel="icon" type="image/png" href="img/icon.png">
+<link rel="apple-touch-icon" href="img/apple-touch-icon.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Anton&family=Open+Sans:wght@400;600;700&display=swap">
+<style>
+/* Fright Night's own page on play.bizmith.com: the itch pages' Heavy look (itch_page/PAGE.md) as a
+   real page. One column: banner, PLAY, then what the game is. */
+:root {
+	color-scheme: dark;
+	--bg: #05060b;
+	--col: #0b0d15;
+	--slab: #121522;
+	--text: #d9dde8;
+	--muted: #8a90a3;
+	--line: #ffffff;
+	--edge: #04050a;
+	--red: #ff4a36;
+	--orange: #ff6b1f;
+	--display: Anton, Impact, "Arial Narrow Bold", "Arial Narrow", sans-serif;
+	--body: "Open Sans", "Segoe UI", system-ui, -apple-system, sans-serif;
+}
+*, *::before, *::after { box-sizing: border-box; }
+html { background: var(--bg); }
+body { margin: 0; background: var(--bg); color: var(--text); font-family: var(--body); font-size: 17px; line-height: 1.55; }
+a { color: var(--orange); }
+a:focus-visible { outline: 2px solid var(--line); outline-offset: 3px; }
+.page { max-width: 1100px; margin: 0 auto; background: var(--col); }
+.top { display: flex; justify-content: space-between; align-items: center; gap: 12px; padding: 10px max(18px, env(safe-area-inset-left, 0px)); font-family: var(--display); letter-spacing: .16em; font-size: 14px; text-transform: uppercase; }
+.top a { color: var(--line); text-decoration: none; opacity: .8; }
+.top a:hover { opacity: 1; }
+.banner img { display: block; width: 100%; height: auto; }
+
+.run { background: var(--slab); text-align: center; padding: 34px 16px 30px; border-bottom: 3px solid var(--edge); }
+.play { display: inline-block; background: var(--orange); transform: skewX(-12deg); padding: 8px 72px 13px; text-decoration: none; box-shadow: 0 0 0 3px var(--line), 0 9px 0 3px rgba(0, 0, 0, .55); }
+.play span { display: block; transform: skewX(12deg); font-family: var(--display); font-size: 46px; line-height: 1.2; letter-spacing: .14em; color: var(--edge); }
+.play:hover { filter: brightness(1.1); }
+.note { margin: 24px 0 0; color: var(--muted); font-size: 15px; }
+.home { margin: 20px auto 0; max-width: 540px; padding: 12px 16px; border: 2px solid var(--line); background: var(--bg); color: var(--line); font-weight: 600; font-size: 16px; }
+.home b { color: var(--orange); }
+
+main { padding: 6px max(22px, env(safe-area-inset-left, 0px)) 40px; }
+.lead { font-size: 21px; font-weight: 700; color: var(--line); margin: 28px 0 8px; }
+h2 { font-family: var(--display); font-weight: 400; text-transform: uppercase; letter-spacing: .08em; font-size: 34px; line-height: 1.1; color: var(--line); margin: 48px 0 0; }
+.rule { position: relative; height: 3px; background: var(--line); margin: 12px 0 22px; box-shadow: 0 0 0 2px var(--edge); }
+.rule i { position: absolute; left: 14px; top: -5px; width: 130px; height: 13px; background: var(--orange); transform: skewX(-24deg); box-shadow: 0 0 0 2px var(--edge); }
+main img { display: block; width: 100%; height: auto; margin: 0 0 14px; }
+.pair { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+ul { padding-left: 22px; margin: 8px 0 18px; }
+li { margin: 2px 0; }
+.phone { display: none; }
+@media (max-width: 700px) {
+	body { font-size: 16px; }
+	.pair { grid-template-columns: 1fr; }
+	.play { padding: 6px 54px 11px; }
+	.play span { font-size: 38px; }
+	h2 { font-size: 28px; }
+	.phone { display: block; }
+	.desk { display: none; }
+}
+footer { padding: 26px max(22px, env(safe-area-inset-left, 0px)) 44px; border-top: 3px solid var(--edge); color: var(--muted); font-size: 15px; display: flex; flex-wrap: wrap; gap: 8px 24px; justify-content: space-between; }
+footer a { color: var(--text); }
+</style>
+</head>
+<body>
+<div class="page">
+	<div class="top"><a href="/">&larr; All games</a><a href="https://bizmith.com">Bizmith</a></div>
+	<header class="banner"><img src="img/banner.png" width="1920" height="640" alt="Fright Night: bare-knuckle boxing in the graveyard. Four fighters throw punches in slanted panels."></header>
+
+	<section class="run">
+		<a class="play" href="play/"><span>PLAY</span></a>
+		<p class="note">Free. Runs in your browser. Saves as you play.</p>
+		<p class="home" id="home-hint" hidden><b>On an iPhone or iPad:</b> tap Share, then Add to Home Screen, and play from the icon. Full screen, and your save stays for good.</p>
+	</section>
+
+	<main>
+		<p class="lead">First-person boxing. Your opponents are already dead.</p>
+		<p>Fright Night is a boxing game seen through your own two gloves, in a graveyard that hits back. Slip the punch, land the counter, build the combo, and knock the hat off a zombie's head. You keep the hat.</p>
+		<p>Climb the Arena, raid the Crypt for gear, then take on the Dead League. No download, on a computer or a phone.</p>
+
+		<h2>The fight</h2>
+		<div class="rule"><i></i></div>
+		<img src="img/clip_fight.gif" width="560" height="315" loading="lazy" alt="A fight in the graveyard arena, seen through the Mauler's gloves">
+		<ul>
+			<li>Jabs, hooks, uppercuts. Chain them.</li>
+			<li>Slip late, then counter.</li>
+			<li>Fill the gauge. Throw your ultimate.</li>
+		</ul>
+		<img src="img/victory.png" width="1746" height="983" loading="lazy" alt="The win screen: the Mauler dancing beside his results">
+
+		<h2>Four fighters</h2>
+		<div class="rule"><i></i></div>
+		<div class="pair desk">
+			<img src="img/fighters_1.png" width="860" height="1080" loading="lazy" alt="The Mauler and the Answer">
+			<img src="img/fighters_2.png" width="860" height="1080" loading="lazy" alt="The Blur and the Stray">
+		</div>
+		<div class="phone">
+			<img src="img/m_fighters_1.png" width="1340" height="1739" loading="lazy" alt="The Mauler and the Answer">
+			<img src="img/m_fighters_2.png" width="1340" height="1739" loading="lazy" alt="The Blur and the Stray">
+		</div>
+		<p>More fighters are on the way.</p>
+
+		<h2>Three ways in</h2>
+		<div class="rule"><i></i></div>
+		<div class="desk">
+			<img src="img/mode_arena.png" width="1746" height="381" loading="lazy" alt="Arena: five divisions, a Grave Champion guards each">
+			<img src="img/mode_crypt.png" width="1746" height="381" loading="lazy" alt="Crypt: rooms, loot, bosses; gild your gear or lose it">
+			<img src="img/mode_league.png" width="1746" height="381" loading="lazy" alt="Dead League: five contenders, five arenas, one belt">
+		</div>
+		<div class="phone">
+			<img src="img/m_mode_arena.png" width="1340" height="560" loading="lazy" alt="Arena: five divisions, a Grave Champion guards each">
+			<img src="img/m_mode_crypt.png" width="1340" height="560" loading="lazy" alt="Crypt: rooms, loot, bosses; gild your gear or lose it">
+			<img src="img/m_mode_league.png" width="1340" height="560" loading="lazy" alt="Dead League: five contenders, five arenas, one belt">
+		</div>
+		<p>Between fights: an upgrade web, level-up cards, gear sets, hats, skins, emotes, daily drills and bounties.</p>
+
+		<h2>Controls</h2>
+		<div class="rule"><i></i></div>
+		<img class="desk" src="img/controls.png" width="1746" height="756" loading="lazy" alt="Mouse and keys: WASD move, left and right click jab and cross, Shift + click hook, Ctrl + click uppercut, Q and E dodge, double-tap W dash, Space jump, R ultimate. A controller works too.">
+		<img class="phone" src="img/m_gestures.png" width="1340" height="564" loading="lazy" alt="Tap: jab or cross. Swipe in: hook. Swipe up: uppercut. Swipe out: slip. Swipe down: roll. Both thumbs up: dash. Both down: back step. Tap the gauge: ultimate.">
+	</main>
+
+	<footer>
+		<span>Also on itch.io: <a href="https://isaiahd0221.itch.io/fright-night">computer</a> · <a href="https://isaiahd0221.itch.io/fright-night-mobile">phone</a></span>
+		<span><a href="/">play.bizmith.com</a></span>
+	</footer>
+</div>
+<script>
+// An iPhone or iPad in Safari (not already the Home Screen app): say how to keep the save for good.
+(function () {
+	var ua = navigator.userAgent || '';
+	var apple = /iPhone|iPad|iPod/.test(ua) || (/Macintosh/.test(ua) && navigator.maxTouchPoints > 1);
+	if (apple && !navigator.standalone) {
+		document.getElementById('home-hint').hidden = false;
+	}
+}());
+</script>
+</body>
+</html>
