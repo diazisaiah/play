@@ -1,0 +1,17 @@
+{
+	"name": "Fright Night",
+	"short_name": "Fright Night",
+	"description": "First-person boxing. Your opponents are already dead.",
+	"start_url": "/fright-night/play/",
+	"scope": "/fright-night/",
+	"display": "fullscreen",
+	"orientation": "landscape",
+	"background_color": "#030306",
+	"theme_color": "#05060b",
+	"icons": [
+		{ "src": "img/apple-touch-icon.png", "sizes": "180x180", "type": "image/png" },
+		{ "src": "img/icon-192.png", "sizes": "192x192", "type": "image/png" },
+		{ "src": "img/icon-512.png", "sizes": "512x512", "type": "image/png" },
+		{ "src": "img/icon.png", "sizes": "256x256", "type": "image/png" }
+	]
+}

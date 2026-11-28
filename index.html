@@ -1,0 +1,382 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<script>/* fn-https */ if (location.protocol === 'http:' && location.hostname === 'play.bizmith.com') { location.replace('https://' + location.host + location.pathname + location.search + location.hash); }</script>
+<script>document.documentElement.classList.add('js');</script>
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Bizmith Studios: play</title>
+<meta name="description" content="Games from Bizmith Studios you can play right here. Free, no download, on a computer or a phone.">
+<meta name="theme-color" content="#000000">
+<meta property="og:type" content="website">
+<meta property="og:title" content="Bizmith Studios">
+<meta property="og:description" content="Games forged block by block. Play free in your browser.">
+<meta property="og:image" content="https://play.bizmith.com/img/bizmith-hero.webp">
+<link rel="icon" href="fright-night/img/favicon.ico" sizes="any"><link rel="icon" type="image/png" href="fright-night/img/icon.png">
+<link rel="preload" as="image" href="img/bizmith-hero-m.webp" media="(max-width: 640px)">
+<link rel="preload" as="image" href="img/bizmith-hero.webp" media="(min-width: 641px)">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Chakra+Petch:wght@500;700&family=Open+Sans:wght@400;600&display=swap">
+<style>
+/* play.bizmith.com, in Bizmith's own look: the voxel bismuth crystal from the studio intro.
+   Black, iridescent oxide colours, square stepped corners. A live field of voxel cubes behind the
+   crystal, cards that tilt and catch the light. A new game is one more <article class="game">. */
+:root {
+	color-scheme: dark;
+	--bg: #000;
+	--slab: #07080d;
+	--text: #e3e6f2;
+	--muted: #9097ad;
+	--violet: #a07cff;
+	--blue: #4f8dff;
+	--teal: #2fd1c4;
+	--green: #74e08f;
+	--gold: #f0bf5c;
+	--iri: linear-gradient(100deg, var(--violet) 0%, var(--blue) 26%, var(--teal) 50%, var(--green) 74%, var(--gold) 100%);
+	--n: 10px;
+	--step: polygon(0 var(--n), var(--n) var(--n), var(--n) 0, calc(100% - var(--n)) 0, calc(100% - var(--n)) var(--n), 100% var(--n), 100% calc(100% - var(--n)), calc(100% - var(--n)) calc(100% - var(--n)), calc(100% - var(--n)) 100%, var(--n) 100%, var(--n) calc(100% - var(--n)), 0 calc(100% - var(--n)));
+	--display: "Chakra Petch", "Arial Narrow", system-ui, sans-serif;
+	--body: "Open Sans", "Segoe UI", system-ui, -apple-system, sans-serif;
+}
+*, *::before, *::after { box-sizing: border-box; }
+html { background: var(--bg); scroll-behavior: smooth; }
+body { margin: 0; background: var(--bg); color: var(--text); font-family: var(--body); font-size: 17px; line-height: 1.6; overflow-x: clip; }
+a { color: inherit; }
+a:focus-visible, button:focus-visible { outline: 2px solid var(--teal); outline-offset: 4px; }
+.iri-text { background: var(--iri); background-size: 200% 100%; -webkit-background-clip: text; background-clip: text; color: transparent; animation: shimmer 6s linear infinite; }
+@keyframes shimmer { to { background-position: -200% 0; } }
+
+/* ---------- Top bar ---------- */
+.bar { position: fixed; inset: 0 0 auto; z-index: 20; display: flex; justify-content: space-between; align-items: center; padding: max(14px, env(safe-area-inset-top)) max(18px, env(safe-area-inset-right)) 14px max(18px, env(safe-area-inset-left)); transition: background .3s ease, backdrop-filter .3s ease; }
+.bar.solid { background: rgba(0, 0, 0, .72); backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px); }
+.logo { display: flex; align-items: center; gap: 10px; font-family: var(--display); font-weight: 700; letter-spacing: .22em; font-size: 15px; text-decoration: none; text-transform: uppercase; }
+.logo i { width: 18px; height: 18px; background: var(--iri); clip-path: polygon(50% 0, 100% 25%, 100% 75%, 50% 100%, 0 75%, 0 25%); animation: spin-hue 8s linear infinite; }
+@keyframes spin-hue { to { filter: hue-rotate(360deg); } }
+.bar nav { display: flex; gap: 22px; font-family: var(--display); font-weight: 500; letter-spacing: .16em; text-transform: uppercase; font-size: 13px; }
+.bar nav a { text-decoration: none; opacity: .7; transition: opacity .2s; }
+.bar nav a:hover { opacity: 1; }
+
+/* ---------- Hero ---------- */
+.hero { position: relative; min-height: 100svh; display: grid; place-items: center; overflow: hidden; isolation: isolate; padding: 90px 18px 70px; }
+.hero canvas { position: absolute; inset: 0; width: 100%; height: 100%; z-index: -2; }
+.hero::before { content: none; }
+.hero::after { content: ""; position: absolute; inset: auto 0 0; height: 30%; z-index: -1; background: linear-gradient(transparent, var(--bg)); pointer-events: none; }
+.stage { width: min(1060px, 100%); text-align: center; perspective: 1000px; }
+.crystal { position: relative; display: block; width: 100%; transform-style: preserve-3d; transform: rotateX(var(--rx, 0deg)) rotateY(var(--ry, 0deg)); cursor: pointer; -webkit-tap-highlight-color: transparent; }
+.crystal img { display: block; width: 100%; height: auto; -webkit-mask-image: radial-gradient(closest-side, #000 72%, transparent 100%); mask-image: radial-gradient(closest-side, #000 72%, transparent 100%); animation: float 7s ease-in-out infinite, glint 9s ease-in-out infinite; }
+@keyframes glint { 0%, 100% { filter: none; } 50% { filter: saturate(1.4) brightness(1.06) hue-rotate(-15deg); } }
+@keyframes float { 0%, 100% { translate: 0 0; } 50% { translate: 0 -10px; } }
+.tag { margin: -2% 0 0; font-family: var(--display); font-weight: 700; text-transform: uppercase; letter-spacing: .08em; font-size: clamp(26px, 5.2vw, 52px); line-height: 1.05; }
+.lead { margin: 12px auto 28px; max-width: 34ch; color: var(--muted); font-size: clamp(16px, 2.2vw, 19px); }
+.ctas { display: flex; flex-wrap: wrap; justify-content: center; gap: 14px; }
+.btn { --n: 7px; position: relative; isolation: isolate; display: inline-flex; align-items: center; padding: 14px 32px; font-family: var(--display); font-weight: 700; font-size: 17px; letter-spacing: .18em; text-transform: uppercase; white-space: nowrap; text-decoration: none; border: 0; background: none; cursor: pointer; filter: drop-shadow(0 0 12px rgba(79, 141, 255, .45)); transition: filter .3s ease, transform .15s ease; }
+.btn::after { content: ""; position: absolute; inset: 0; z-index: -1; background: rgba(10, 12, 20, .88); clip-path: var(--step); transition: background .3s ease; }
+.btn::before { content: ""; position: absolute; inset: 0; padding: 2px; background: var(--iri); background-size: 200% 100%; clip-path: var(--step); -webkit-mask: linear-gradient(#000 0 0) content-box exclude, linear-gradient(#000 0 0); mask: linear-gradient(#000 0 0) content-box exclude, linear-gradient(#000 0 0); animation: shimmer 6s linear infinite; }
+.btn span { background: var(--iri); background-size: 200% 100%; -webkit-background-clip: text; background-clip: text; color: transparent; animation: shimmer 6s linear infinite; }
+.btn:hover { filter: drop-shadow(0 0 20px rgba(47, 209, 196, .65)); transform: translateY(-2px); }
+.btn:hover::after { background: rgba(22, 26, 42, .92); }
+.btn:active { transform: translateY(1px) scale(.98); }
+.hint { position: absolute; bottom: max(18px, env(safe-area-inset-bottom)); left: 50%; translate: -50% 0; font-family: var(--display); font-size: 12px; letter-spacing: .3em; text-transform: uppercase; color: var(--muted); text-decoration: none; display: grid; justify-items: center; gap: 8px; }
+.hint b { width: 12px; height: 12px; border-right: 2px solid var(--teal); border-bottom: 2px solid var(--teal); rotate: 45deg; animation: bob 1.6s ease-in-out infinite; }
+@keyframes bob { 50% { translate: 0 6px; } }
+
+/* ---------- Marquee ---------- */
+.marquee { position: relative; overflow: hidden; border-block: 1px solid rgba(255, 255, 255, .08); background: #05060a; padding: 14px 0; }
+.marquee div { display: flex; width: max-content; animation: slide 28s linear infinite; }
+.marquee span { flex: none; display: flex; align-items: center; gap: 26px; padding-right: 26px; font-family: var(--display); font-weight: 700; font-size: clamp(16px, 2.4vw, 22px); letter-spacing: .2em; text-transform: uppercase; white-space: nowrap; }
+.marquee i { width: 12px; height: 12px; background: var(--iri); clip-path: polygon(50% 0, 100% 25%, 100% 75%, 50% 100%, 0 75%, 0 25%); }
+@keyframes slide { to { transform: translateX(-50%); } }
+
+/* ---------- Games ---------- */
+.wrap { max-width: 1140px; margin: 0 auto; padding: 0 max(18px, env(safe-area-inset-left)); }
+.games { padding: 90px 0 40px; }
+.kicker { font-family: var(--display); font-weight: 500; letter-spacing: .3em; text-transform: uppercase; font-size: 13px; color: var(--teal); margin: 0 0 8px; }
+h2 { font-family: var(--display); font-weight: 700; text-transform: uppercase; letter-spacing: .04em; font-size: clamp(32px, 6vw, 58px); line-height: 1; margin: 0 0 50px; }
+.game { display: grid; grid-template-columns: 1.15fr 1fr; gap: clamp(26px, 5vw, 64px); align-items: center; margin-bottom: clamp(70px, 10vw, 120px); }
+.game:nth-of-type(even) .art { order: 2; }
+.art { --n: 14px; position: relative; display: block; padding: 3px; background: var(--iri); background-size: 200% 200%; clip-path: var(--step); transform: perspective(900px) rotateX(var(--rx, 0deg)) rotateY(var(--ry, 0deg)); transition: transform .25s ease-out; animation: border-flow 8s linear infinite; text-decoration: none; }
+@keyframes border-flow { 50% { background-position: 100% 100%; } }
+.art .frame { --n: 12px; position: relative; overflow: hidden; clip-path: var(--step); background: var(--slab); }
+.art img { display: block; width: 100%; height: auto; aspect-ratio: 63 / 50; object-fit: cover; transition: transform .6s ease, filter .4s; }
+.art:hover img { transform: scale(1.05); filter: saturate(1.15); }
+.art .foil { position: absolute; inset: 0; mix-blend-mode: color-dodge; opacity: 0; transition: opacity .3s; background: radial-gradient(circle at var(--mx, 50%) var(--my, 50%), rgba(255, 255, 255, .35), transparent 40%), linear-gradient(115deg, transparent 20%, rgba(160, 124, 255, .45) 38%, rgba(47, 209, 196, .45) 50%, rgba(240, 191, 92, .4) 62%, transparent 80%); background-size: 100% 100%, 250% 250%; background-position: 0 0, var(--mx, 50%) var(--my, 50%); pointer-events: none; }
+.art:hover .foil { opacity: .55; }
+.badge { --n: 5px; position: absolute; top: 18px; left: 18px; padding: 5px 12px; font-family: var(--display); font-weight: 700; font-size: 12px; letter-spacing: .2em; text-transform: uppercase; background: rgba(0, 0, 0, .75); clip-path: var(--step); backdrop-filter: blur(4px); }
+.badge::before { content: ""; display: inline-block; width: 8px; height: 8px; margin-right: 8px; background: var(--green); box-shadow: 0 0 10px var(--green); animation: pulse 1.4s ease-in-out infinite; }
+@keyframes pulse { 50% { opacity: .3; } }
+.info h3 { font-family: var(--display); font-weight: 700; text-transform: uppercase; letter-spacing: .04em; font-size: clamp(30px, 4.6vw, 48px); line-height: 1; margin: 0 0 14px; }
+.info p { margin: 0 0 22px; font-size: 18px; color: var(--text); max-width: 36ch; }
+.chips { display: flex; flex-wrap: wrap; gap: 8px; margin: 0 0 18px; padding: 0; list-style: none; }
+.chips li { --n: 4px; padding: 4px 12px; font-family: var(--display); font-weight: 500; font-size: 13px; letter-spacing: .14em; text-transform: uppercase; color: var(--muted); background: #10121a; clip-path: var(--step); }
+.where { display: flex; gap: 18px; margin: 0 0 26px; color: var(--muted); font-size: 14px; }
+.where span { display: inline-flex; align-items: center; gap: 7px; }
+.where svg { width: 18px; height: 18px; stroke: var(--teal); fill: none; stroke-width: 2; }
+
+/* Coming next */
+.next { --n: 14px; position: relative; display: grid; place-items: center; text-align: center; gap: 16px; padding: 64px 22px; margin-bottom: 90px; background: #05060a; clip-path: var(--step); overflow: hidden; }
+.next::before { content: ""; position: absolute; inset: 0; background: linear-gradient(rgba(255, 255, 255, .035) 1px, transparent 1px) 0 0 / 28px 28px, linear-gradient(90deg, rgba(255, 255, 255, .035) 1px, transparent 1px) 0 0 / 28px 28px; -webkit-mask-image: radial-gradient(closest-side, #000, transparent); mask-image: radial-gradient(closest-side, #000, transparent); }
+.forge { position: relative; width: 120px; height: 120px; }
+.forge i { position: absolute; width: 34px; height: 34px; left: 43px; top: 43px; background: var(--iri); clip-path: polygon(50% 0, 100% 25%, 100% 75%, 50% 100%, 0 75%, 0 25%); animation: build 3.2s ease-in-out infinite; animation-delay: calc(var(--k) * .22s); opacity: 0; }
+.forge i:nth-child(1) { --k: 0; translate: 0 -30px; }
+.forge i:nth-child(2) { --k: 1; translate: -26px -15px; }
+.forge i:nth-child(3) { --k: 2; translate: 26px -15px; }
+.forge i:nth-child(4) { --k: 3; translate: 0 0; }
+.forge i:nth-child(5) { --k: 4; translate: -26px 15px; }
+.forge i:nth-child(6) { --k: 5; translate: 26px 15px; }
+.forge i:nth-child(7) { --k: 6; translate: 0 30px; }
+@keyframes build { 0% { opacity: 0; transform: scale(.2); filter: hue-rotate(0deg); } 25%, 70% { opacity: 1; transform: scale(1); } 100% { opacity: 0; transform: scale(.2); filter: hue-rotate(180deg); } }
+.next h3 { position: relative; font-family: var(--display); font-weight: 700; text-transform: uppercase; letter-spacing: .1em; font-size: clamp(22px, 3.4vw, 32px); margin: 0; }
+.next p { position: relative; margin: 0; color: var(--muted); }
+
+/* ---------- Footer ---------- */
+footer { position: relative; padding: 34px 0 max(34px, env(safe-area-inset-bottom)); color: var(--muted); font-size: 15px; }
+footer::before { content: ""; position: absolute; inset: 0 0 auto; height: 3px; background: var(--iri); }
+footer .wrap { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 12px; }
+footer a { color: var(--text); text-decoration: none; }
+footer a:hover { text-decoration: underline; }
+
+/* ---------- Reveal on scroll ---------- */
+.js .reveal { opacity: 0; transform: translateY(36px); transition: opacity .8s ease, transform .8s cubic-bezier(.2, .7, .2, 1); }
+.js .reveal.seen { opacity: 1; transform: none; }
+
+@media (max-width: 760px) {
+	.bar nav { display: none; }
+	.crystal img { -webkit-mask-image: linear-gradient(transparent, #000 14%, #000 86%, transparent), linear-gradient(90deg, transparent, #000 4%, #000 96%, transparent); -webkit-mask-composite: source-in; mask-image: linear-gradient(transparent, #000 14%, #000 86%, transparent), linear-gradient(90deg, transparent, #000 4%, #000 96%, transparent); mask-composite: intersect; }
+	.tag { margin-top: 10px; }
+	.game { grid-template-columns: 1fr; }
+	.game:nth-of-type(even) .art { order: 0; }
+	.info p { font-size: 17px; }
+	.btn { padding: 13px 26px; font-size: 16px; }
+}
+@media (prefers-reduced-motion: reduce) {
+	*, *::before, *::after { animation: none !important; transition: none !important; }
+	html { scroll-behavior: auto; }
+	.js .reveal { opacity: 1; transform: none; }
+}
+</style>
+</head>
+<body>
+<header class="bar" id="bar">
+	<a class="logo" href="#top"><i></i>Bizmith</a>
+	<nav><a href="#games">Games</a><a href="https://bizmith.com">bizmith.com</a></nav>
+</header>
+
+<section class="hero" id="top">
+	<canvas id="field" aria-hidden="true"></canvas>
+	<div class="stage">
+		<div class="crystal" id="crystal" role="img" aria-label="Bizmith: a stepped crystal of voxel cubes in violet, blue and gold above the name">
+			<picture>
+				<source media="(max-width: 640px)" srcset="img/bizmith-hero-m.webp" width="900" height="627">
+				<img src="img/bizmith-hero.webp" width="1280" height="720" alt="" fetchpriority="high">
+			</picture>
+		</div>
+		<p class="tag"><span class="iri-text">Games forged</span> block by block.</p>
+		<p class="lead">Play free, right in your browser. Computer or phone, no download.</p>
+		<div class="ctas">
+			<a class="btn" href="#games"><span>Play now</span></a>
+		</div>
+	</div>
+	<a class="hint" href="#games">Scroll<b></b></a>
+</section>
+
+<div class="marquee" aria-hidden="true"><div>
+	<span>Fright Night <i></i> Hold the Line <i></i> Free to play <i></i> No download <i></i> Computer or phone <i></i></span>
+	<span>Fright Night <i></i> Hold the Line <i></i> Free to play <i></i> No download <i></i> Computer or phone <i></i></span>
+</div></div>
+
+<main class="games" id="games">
+	<div class="wrap">
+		<p class="kicker reveal">Play now</p>
+		<h2 class="reveal">Our <span class="iri-text">games</span></h2>
+
+		<article class="game reveal">
+			<a class="art" href="fright-night/" aria-label="Play Fright Night">
+				<div class="frame">
+					<img src="img/fright-night-cover.webp" width="1260" height="1000" loading="lazy" alt="Fright Night: the Mauler throws a flaming punch at the camera, the other fighters behind him in a moonlit graveyard">
+					<div class="foil"></div>
+					<span class="badge">Play free</span>
+				</div>
+			</a>
+			<div class="info">
+				<h3>Fright Night</h3>
+				<ul class="chips"><li>Boxing</li><li>Horror</li><li>First-person</li></ul>
+				<p>First-person boxing. Your opponents are already dead.</p>
+				<div class="where">
+					<span><svg viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="12" rx="1"/><path d="M8 20h8M12 16v4"/></svg>Computer</span>
+					<span><svg viewBox="0 0 24 24"><rect x="7" y="2" width="10" height="20" rx="2"/><path d="M11 18h2"/></svg>Phone</span>
+				</div>
+				<a class="btn" href="fright-night/"><span>Play Fright Night</span></a>
+			</div>
+		</article>
+
+		<article class="game reveal">
+			<a class="art" href="hold-the-line/" aria-label="Play Hold the Line">
+				<div class="frame">
+					<img src="img/hold-the-line.png" width="1260" height="1000" loading="lazy" alt="Hold the Line: a band of pixel-art heroes under a crowned shadow with burning eyes">
+					<div class="foil"></div>
+					<span class="badge">Play free</span>
+				</div>
+			</a>
+			<div class="info">
+				<h3>Hold the Line</h3>
+				<ul class="chips"><li>Castle defence</li><li>Pixel art</li></ul>
+				<p>Castle defence. Hire knights, archers and mages, then hold the line.</p>
+				<div class="where">
+					<span><svg viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="12" rx="1"/><path d="M8 20h8M12 16v4"/></svg>Computer</span>
+					<span><svg viewBox="0 0 24 24"><rect x="7" y="2" width="10" height="20" rx="2"/><path d="M11 18h2"/></svg>Phone</span>
+				</div>
+				<a class="btn" href="hold-the-line/"><span>Play Hold the Line</span></a>
+			</div>
+		</article>
+
+		<div class="next reveal">
+			<div class="forge" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i><i></i><i></i></div>
+			<h3>Next game <span class="iri-text">forging</span></h3>
+			<p>More on the way.</p>
+		</div>
+	</div>
+</main>
+
+<footer>
+	<div class="wrap">
+		<span>© 2026 Bizmith Studios</span>
+		<a href="https://bizmith.com">bizmith.com</a>
+	</div>
+</footer>
+
+<script>
+(() => {
+	const still = matchMedia('(prefers-reduced-motion: reduce)').matches;
+	const fine = matchMedia('(pointer: fine)').matches;
+
+	// Top bar turns solid once you leave the hero.
+	const bar = document.getElementById('bar');
+	const onScroll = () => bar.classList.toggle('solid', scrollY > 40);
+	addEventListener('scroll', onScroll, { passive: true });
+	onScroll();
+
+	// Reveal on scroll.
+	const seen = new IntersectionObserver((list) => {
+		for (const e of list) if (e.isIntersecting) { e.target.classList.add('seen'); seen.unobserve(e.target); }
+	}, { threshold: 0.15 });
+	document.querySelectorAll('.reveal').forEach((el) => seen.observe(el));
+
+	// Game art tilts toward the pointer and catches the light.
+	if (fine && !still) {
+		document.querySelectorAll('.art').forEach((art) => {
+			art.addEventListener('pointermove', (e) => {
+				const r = art.getBoundingClientRect();
+				const x = (e.clientX - r.left) / r.width, y = (e.clientY - r.top) / r.height;
+				art.style.setProperty('--ry', ((x - 0.5) * 10).toFixed(2) + 'deg');
+				art.style.setProperty('--rx', ((0.5 - y) * 8).toFixed(2) + 'deg');
+				art.style.setProperty('--mx', (x * 100).toFixed(1) + '%');
+				art.style.setProperty('--my', (y * 100).toFixed(1) + '%');
+			});
+			art.addEventListener('pointerleave', () => { art.style.setProperty('--rx', '0deg'); art.style.setProperty('--ry', '0deg'); });
+		});
+	}
+
+	// ---------- The hero: a live field of voxel cubes in the crystal's oxide colours ----------
+	const hero = document.querySelector('.hero');
+	const crystal = document.getElementById('crystal');
+	const canvas = document.getElementById('field');
+	const ctx = canvas.getContext('2d');
+	const HUES = [262, 222, 176, 140, 42];
+	let W = 0, H = 0, dpr = 1, cubes = [], sparks = [];
+	const ptr = { x: -9999, y: -9999, tx: 0, ty: 0, rx: 0, ry: 0 };
+
+	function cube(fresh) {
+		const z = Math.random() ** 1.6;
+		return { x: Math.random() * W, y: fresh ? Math.random() * H : H + 40, z, s: 5 + z * 20, h: HUES[(Math.random() * HUES.length) | 0], p: Math.random() * 6.28, vx: 0, vy: 0 };
+	}
+	function size() {
+		dpr = Math.min(devicePixelRatio || 1, 2);
+		W = hero.clientWidth; H = hero.clientHeight;
+		canvas.width = W * dpr; canvas.height = H * dpr;
+		ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+		const want = Math.round(Math.min(110, (W * H) / 11000));
+		cubes = Array.from({ length: want }, () => cube(true));
+	}
+	function face(pts, fill) {
+		ctx.beginPath(); ctx.moveTo(pts[0], pts[1]);
+		for (let i = 2; i < pts.length; i += 2) ctx.lineTo(pts[i], pts[i + 1]);
+		ctx.closePath(); ctx.fillStyle = fill; ctx.fill();
+	}
+	// An isometric voxel; big ones get the hopper crystal's stepped hollow on top.
+	function draw(c, hue, a) {
+		const s = c.s, k = s * 0.866, x = c.x, y = c.y;
+		face([x, y - s, x + k, y - s / 2, x, y, x - k, y - s / 2], `hsla(${hue},80%,72%,${a})`);
+		face([x - k, y - s / 2, x, y, x, y + s, x - k, y + s / 2], `hsla(${hue},55%,46%,${a})`);
+		face([x, y, x + k, y - s / 2, x + k, y + s / 2, x, y + s], `hsla(${hue + 25},50%,30%,${a})`);
+		if (s > 14) {
+			const t = s * 0.5, u = t * 0.866, cy = y - s / 2;
+			face([x, cy - t / 2, x + u, cy, x, cy + t / 2, x - u, cy], `hsla(${hue + 30},60%,22%,${a})`);
+		}
+	}
+	function burst(x, y) {
+		for (let i = 0; i < 18; i++) {
+			const ang = Math.random() * 6.28, sp = 90 + Math.random() * 260;
+			sparks.push({ x, y, vx: Math.cos(ang) * sp, vy: Math.sin(ang) * sp - 80, s: 4 + Math.random() * 9, h: HUES[i % HUES.length], life: 1, z: 1, p: 0 });
+		}
+	}
+	let last = performance.now(), running = true;
+	function frame(now) {
+		const dt = Math.min(0.05, (now - last) / 1000); last = now;
+		ctx.clearRect(0, 0, W, H);
+		const t = now / 1000;
+		for (const c of cubes) {
+			c.y -= (8 + c.z * 26) * dt;
+			c.x += Math.sin(t * 0.4 + c.p) * 6 * dt;
+			const dx = c.x - ptr.x, dy = c.y - ptr.y, d2 = dx * dx + dy * dy;
+			if (d2 < 22000) { const f = (1 - d2 / 22000) * 900 * dt; const d = Math.sqrt(d2) || 1; c.vx += (dx / d) * f; c.vy += (dy / d) * f; }
+			c.x += c.vx * dt; c.y += c.vy * dt; c.vx *= 0.92; c.vy *= 0.92;
+			if (c.y < -40 || c.x < -60 || c.x > W + 60) Object.assign(c, cube(false));
+			const hue = c.h + Math.sin(t * 0.6 + c.p) * 18;
+			draw(c, hue, 0.12 + c.z * 0.55);
+		}
+		for (let i = sparks.length - 1; i >= 0; i--) {
+			const s = sparks[i];
+			s.x += s.vx * dt; s.y += s.vy * dt; s.vy += 220 * dt; s.vx *= 0.98; s.life -= dt * 0.9;
+			if (s.life <= 0) { sparks.splice(i, 1); continue; }
+			draw(s, s.h + (1 - s.life) * 60, s.life);
+		}
+		// The crystal leans toward the pointer, eased.
+		ptr.rx += (ptr.tx - ptr.rx) * 0.06; ptr.ry += (ptr.ty - ptr.ry) * 0.06;
+		crystal.style.setProperty('--rx', ptr.rx.toFixed(2) + 'deg');
+		crystal.style.setProperty('--ry', ptr.ry.toFixed(2) + 'deg');
+		if (running) requestAnimationFrame(frame);
+	}
+	function point(e) {
+		const r = hero.getBoundingClientRect();
+		ptr.x = e.clientX - r.left; ptr.y = e.clientY - r.top;
+		ptr.ty = ((ptr.x / W) - 0.5) * 16; ptr.tx = (0.5 - ptr.y / H) * 10;
+		hero.style.setProperty('--gx', (ptr.x / W * 100).toFixed(1) + '%');
+		hero.style.setProperty('--gy', (ptr.y / H * 100).toFixed(1) + '%');
+	}
+	hero.addEventListener('pointermove', point, { passive: true });
+	hero.addEventListener('pointerleave', () => { ptr.x = ptr.y = -9999; ptr.tx = ptr.ty = 0; });
+	hero.addEventListener('pointerdown', (e) => {
+		if (e.target.closest('a')) return;
+		const r = hero.getBoundingClientRect();
+		burst(e.clientX - r.left, e.clientY - r.top);
+	});
+
+	size();
+	addEventListener('resize', () => { if (Math.abs(hero.clientWidth - W) > 2) size(); });
+	if (still) { frame(performance.now()); running = false; return; }
+	// Rest when the hero is out of sight or the tab is hidden.
+	new IntersectionObserver(([e]) => {
+		const on = e.isIntersecting && !document.hidden;
+		if (on && !running) { running = true; last = performance.now(); requestAnimationFrame(frame); }
+		running = on;
+	}).observe(hero);
+	document.addEventListener('visibilitychange', () => {
+		if (!document.hidden && !running && hero.getBoundingClientRect().bottom > 0) { running = true; last = performance.now(); requestAnimationFrame(frame); }
+		else if (document.hidden) running = false;
+	});
+	requestAnimationFrame(frame);
+})();
+</script>
+</body>
+</html>
